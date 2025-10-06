@@ -128,17 +128,24 @@ class AIGenerator:
     def generate_summary(
         self, text: str, discipline: str, niveau: str
     ) -> Optional[Dict[str, Any]]:
-        """Generate a structured summary for the provided document."""
+        """Generate an intelligent structured summary with enhanced features."""
 
         prompt = f"""En tant qu'expert en {discipline} pour le niveau {niveau}, 
-génère un résumé structuré du document suivant.
+génère un résumé intelligent et structuré du document suivant.
 
-Le résumé doit inclure :
-1. Résumé par section/chapitre
-2. Extraction des définitions clés
-3. Liste des théorèmes/formules importants
-4. Concepts à retenir pour l'examen
-5. Liens avec cours précédents
+ANALYSE REQUISE :
+1. **Résumé par section/chapitre** (si le document a des chapitres)
+2. **Mind map visuel** - Diagramme des concepts principaux et leurs relations
+3. **Timeline** - Pour documents historiques/chronologiques (dates importantes)
+4. **Glossaire automatique** - Termes techniques avec explications claires
+5. **Flashcards** - Paires question/réponse pour révision
+6. **Analyse de document** :
+   - Type détecté (cours, article scientifique, rapport, etc.)
+   - Niveau de difficulté estimé (débutant/intermédiaire/avancé)
+   - Mots-clés principaux extraits
+   - Concepts connexes suggérés
+   - Temps de lecture estimé
+   - Statistiques (nombre de pages, concepts uniques)
 
 Document :
 {text[:4000]}
@@ -146,10 +153,37 @@ Document :
 IMPORTANT : Retourne UNIQUEMENT un objet JSON valide, sans texte avant ou après.
 Format JSON requis :
 {{
-    "resume_general": "...",
+    "resume_general": "résumé général du document",
     "sections": [
-        {{"titre": "...", "contenu": "..."}},
+        {{"titre": "Titre section", "contenu": "Résumé détaillé de la section"}}
     ],
+    "mindmap": {{
+        "concepts_principaux": ["concept1", "concept2"],
+        "relations": [
+            {{"de": "concept1", "vers": "concept2", "type": "implique"}}
+        ]
+    }},
+    "timeline": [
+        {{"date": "1990", "evenement": "Découverte importante", "importance": "haute"}}
+    ],
+    "glossaire": [
+        {{"terme": "terme technique", "definition": "explication claire", "exemple": "exemple d'usage"}}
+    ],
+    "flashcards": [
+        {{"question": "Question à poser", "reponse": "Réponse attendue", "difficulte": "facile|moyen|difficile"}}
+    ],
+    "analyse": {{
+        "type_document": "cours|article|rapport|these|manuel",
+        "niveau_difficulte": "debutant|intermediaire|avance",
+        "mots_cles": ["mot1", "mot2", "mot3"],
+        "concepts_connexes": ["concept lié 1", "concept lié 2"],
+        "temps_lecture_min": 15,
+        "statistiques": {{
+            "nb_pages_estime": 10,
+            "nb_mots": 3000,
+            "nb_concepts_uniques": 25
+        }}
+    }},
     "definitions": ["def1", "def2"],
     "theoremes_formules": ["th1", "th2"],
     "concepts_cles": ["concept1", "concept2"],
@@ -305,6 +339,22 @@ Format JSON requis :
         return {
             "resume_general": "Résumé en cours de génération...",
             "sections": [],
+            "mindmap": {"concepts_principaux": [], "relations": []},
+            "timeline": [],
+            "glossaire": [],
+            "flashcards": [],
+            "analyse": {
+                "type_document": "non déterminé",
+                "niveau_difficulte": "intermediaire",
+                "mots_cles": [],
+                "concepts_connexes": [],
+                "temps_lecture_min": 0,
+                "statistiques": {
+                    "nb_pages_estime": 0,
+                    "nb_mots": 0,
+                    "nb_concepts_uniques": 0
+                }
+            },
             "definitions": [],
             "theoremes_formules": [],
             "concepts_cles": [],
