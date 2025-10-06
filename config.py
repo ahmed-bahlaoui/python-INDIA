@@ -23,7 +23,7 @@ class Config:
 
     # Model Configuration per Provider
     MODELS = {
-        "deepseek": "deepseek-chat",
+        "deepseek": "deepseek-chat",  # Uses latest model (V3.2-Exp)
         "groq": "llama-3.1-70b-versatile",  # ou mixtral-8x7b-32768
         "ollama": "llama3.1:8b",
         "openai": "gpt-4o-mini",
