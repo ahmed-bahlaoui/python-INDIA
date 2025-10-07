@@ -1,6 +1,7 @@
 # 🚀 Quick Start: Switch to Groq (FREE AI Provider)
 
 ## Why Groq?
+
 - ✅ **100% FREE** (no credit card needed!)
 - ✅ **Fastest AI** (seriously, it's insanely fast)
 - ✅ **Great quality** (Llama 3.1 70B model)
@@ -34,6 +35,7 @@ GROQ_API_KEY=gsk_YOUR_KEY_HERE_PASTE_IT
 ```
 
 **Your current .env should look like:**
+
 ```properties
 AI_PROVIDER=groq
 GROQ_API_KEY=gsk_your_actual_key_from_groq_console
@@ -70,12 +72,14 @@ streamlit run app.py
 ## 🎯 What You Get with Groq
 
 ### Free Tier Limits:
+
 - **14,400 requests per day** per model
 - **~30 requests per minute**
 - **No credit card required**
 - **No expiration**
 
 ### Models Available:
+
 - `llama-3.1-70b-versatile` (Default - Best for your app)
 - `llama-3.1-8b-instant` (Faster, lighter)
 - `mixtral-8x7b-32768` (32K context window)
@@ -86,11 +90,13 @@ streamlit run app.py
 ## 💡 Why This Is Perfect For You
 
 **Your Current Situation:**
+
 - DeepSeek key has $0 balance ❌
 - Need to add credits to continue ❌
 - Costs money 💰
 
 **With Groq:**
+
 - Completely FREE forever ✅
 - Works immediately ✅
 - Actually FASTER than DeepSeek ✅
@@ -112,28 +118,31 @@ If you ever want to go back to DeepSeek:
 
 ## 📊 Speed Comparison
 
-| Provider | Quiz Generation Time |
-|----------|---------------------|
-| **Groq** | **3-5 seconds** ⚡ |
-| DeepSeek | 8-12 seconds |
-| OpenAI | 10-15 seconds |
-| Ollama (local) | 30-60 seconds |
+| Provider       | Quiz Generation Time |
+| -------------- | -------------------- |
+| **Groq**       | **3-5 seconds** ⚡   |
+| DeepSeek       | 8-12 seconds         |
+| OpenAI         | 10-15 seconds        |
+| Ollama (local) | 30-60 seconds        |
 
 ---
 
 ## ⚠️ Troubleshooting
 
 ### "Invalid API key"
+
 - ✅ Make sure key starts with `gsk_`
 - ✅ No extra spaces before or after key
 - ✅ Restart Streamlit after changing .env
 
 ### "Rate limit exceeded"
+
 - ✅ Wait 1 minute
 - ✅ You hit the 30 requests/min limit
 - ✅ Totally normal, just retry
 
 ### "Connection error"
+
 - ✅ Check your internet connection
 - ✅ Groq servers might be down (rare)
 - ✅ Try again in a few minutes
@@ -143,6 +152,7 @@ If you ever want to go back to DeepSeek:
 ## 🎉 Ready to Go!
 
 After completing these steps, you'll have:
+
 - ✅ FREE AI provider (no more "insufficient balance" errors!)
 - ✅ FAST quiz generation (3-5 seconds)
 - ✅ Unlimited usage (within rate limits)
