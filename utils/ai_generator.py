@@ -355,8 +355,8 @@ Format JSON requis :
                 "statistiques": {
                     "nb_pages_estime": 0,
                     "nb_mots": 0,
-                    "nb_concepts_uniques": 0
-                }
+                    "nb_concepts_uniques": 0,
+                },
             },
             "definitions": [],
             "theoremes_formules": [],
