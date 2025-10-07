@@ -126,12 +126,18 @@ class AIGenerator:
             return f"Erreur: {e}"
 
     def generate_summary(
-        self, text: str, discipline: str, niveau: str
+        self, text: str, discipline: str, niveau: str, page_count: int = 0
     ) -> Optional[Dict[str, Any]]:
         """Generate an intelligent structured summary with enhanced features."""
 
         prompt = f"""En tant qu'expert en {discipline} pour le niveau {niveau}, 
 génère un résumé intelligent et structuré du document suivant.
+
+INFORMATIONS DU DOCUMENT :
+- Nombre de pages : {page_count}
+- Extrait du texte (premiers 4000 caractères) :
+
+{text[:4000]}
 
 ANALYSE REQUISE :
 1. **Résumé par section/chapitre** (si le document a des chapitres)
@@ -145,10 +151,7 @@ ANALYSE REQUISE :
    - Mots-clés principaux extraits
    - Concepts connexes suggérés
    - Temps de lecture estimé
-   - Statistiques (nombre de pages, concepts uniques)
-
-Document :
-{text[:4000]}
+   - Statistiques (utilise {page_count} comme nombre réel de pages)
 
 IMPORTANT : Retourne UNIQUEMENT un objet JSON valide, sans texte avant ou après.
 Format JSON requis :
@@ -179,7 +182,7 @@ Format JSON requis :
         "concepts_connexes": ["concept lié 1", "concept lié 2"],
         "temps_lecture_min": 15,
         "statistiques": {{
-            "nb_pages_estime": 10,
+            "nb_pages_estime": {page_count},
             "nb_mots": 3000,
             "nb_concepts_uniques": 25
         }}

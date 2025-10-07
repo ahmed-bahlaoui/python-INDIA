@@ -272,7 +272,10 @@ def process_documents(files):
             # Générer le résumé avec AI
             status_text.text(f"Génération du résumé pour {file.name}...")
             summary = ai_gen.generate_summary(
-                doc_info["text"], st.session_state.discipline, st.session_state.niveau
+                doc_info["text"], 
+                st.session_state.discipline, 
+                st.session_state.niveau,
+                doc_info.get("page_count", 0)
             )
 
             doc_info["summary"] = summary
