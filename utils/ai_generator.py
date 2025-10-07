@@ -331,11 +331,15 @@ Format JSON requis :
                 if json_start != -1 and json_end > json_start:
                     json_str = response_text[json_start:json_end]
                     return json.loads(json_str)
+                else:
+                    st.error("Format JSON non trouvé dans la réponse")
+                    return self._create_default_recommendations()
             except json.JSONDecodeError as e:
                 st.error(f"Erreur de parsing JSON: {e}")
                 return self._create_default_recommendations()
 
-        return None
+        # Si pas de réponse, retourner les recommandations par défaut
+        return self._create_default_recommendations()
 
     def _create_default_summary(self) -> Dict[str, Any]:
         """Create a default summary when generation fails."""

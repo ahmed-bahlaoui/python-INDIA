@@ -29,7 +29,7 @@ class QuizManager:
                 # Normaliser les réponses pour éviter les problèmes d'espaces/casse
                 user_answer_normalized = str(user_answer).strip()
                 correct_answer_normalized = str(question["correct_answer"]).strip()
-                
+
                 if user_answer_normalized == correct_answer_normalized:
                     correct = True
                     points = question.get("points", 1)

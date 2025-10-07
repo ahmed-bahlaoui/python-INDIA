@@ -131,20 +131,54 @@ def main():
 
 def generate_recommendations():
     """Générer les recommandations avec AI"""
-    ai_gen = AIGenerator()
-    results = st.session_state.quiz_results
+    try:
+        ai_gen = AIGenerator()
+        results = st.session_state.quiz_results
 
-    # Identifier les points faibles
-    weak_areas = []
-    for result in results:
-        if "competence_breakdown" in result:
-            for comp, score in result["competence_breakdown"].items():
-                if score < 60:
-                    weak_areas.append(comp)
+        # Identifier les points faibles
+        weak_areas = []
+        for result in results:
+            if "competence_breakdown" in result:
+                for comp, score in result["competence_breakdown"].items():
+                    if score < 60:
+                        weak_areas.append(comp)
+        
+        # Ajouter aussi les weak_areas de chaque résultat
+        for result in results:
+            if "weak_areas" in result:
+                weak_areas.extend(result["weak_areas"])
 
-    # Générer les recommandations
-    recommendations = ai_gen.generate_recommendations(results, weak_areas)
-    st.session_state.recommendations = recommendations
+        # Générer les recommandations
+        recommendations = ai_gen.generate_recommendations(results, weak_areas)
+        
+        # Vérifier que les recommandations ne sont pas None
+        if recommendations is None:
+            st.error("Erreur lors de la génération des recommandations")
+            recommendations = {
+                "points_a_revoir": [],
+                "exercices_recommandes": ["Refaire les exercices du cours"],
+                "ressources": [],
+                "strategies": ["Relire régulièrement", "Pratiquer avec des exercices"],
+                "planning": {
+                    "semaine_1": ["Revoir les cours"],
+                    "semaine_2": ["Faire des exercices"],
+                },
+            }
+        
+        st.session_state.recommendations = recommendations
+    except Exception as e:
+        st.error(f"Erreur lors de la génération: {str(e)}")
+        # Fournir des recommandations par défaut
+        st.session_state.recommendations = {
+            "points_a_revoir": [],
+            "exercices_recommandes": ["Refaire les exercices du cours"],
+            "ressources": [],
+            "strategies": ["Relire régulièrement", "Pratiquer avec des exercices"],
+            "planning": {
+                "semaine_1": ["Revoir les cours"],
+                "semaine_2": ["Faire des exercices"],
+            },
+        }
 
 
 def show_progress_projection():

@@ -10,9 +10,11 @@
 ## 📋 Problem Description
 
 ### User Report:
+
 > "The results section is always wrong, I know I answered right but it doesn't reflect that"
 
 ### Symptoms:
+
 - User selects correct answers during quiz
 - Quiz results show incorrect scores
 - Correct answers counted as wrong
@@ -34,11 +36,11 @@ if shuffle_options:
             correct_idx = q["options"].index(q["correct_answer"])
             # Example: correct_answer = "Paris", options = ["Paris", "London", "Berlin"]
             # correct_idx = 0
-            
+
             # Step 2: Shuffle options
             random.shuffle(q["options"])
             # Now: options = ["London", "Berlin", "Paris"]
-            
+
             # Step 3: BUG - Get answer at OLD index in NEW shuffled list!
             q["correct_answer"] = q["options"][correct_idx]
             # Gets options[0] = "London" ❌ (Wrong!)
@@ -46,6 +48,7 @@ if shuffle_options:
 ```
 
 ### What Happened:
+
 1. AI generates quiz with `correct_answer = "Paris"`
 2. Options are `["Paris", "London", "Berlin"]`
 3. Code saves index `0` (Paris's position)
@@ -55,6 +58,7 @@ if shuffle_options:
 7. System compares "Paris" vs "London" → WRONG ❌
 
 ### Why This Happened:
+
 The code tried to "update" the correct answer after shuffling by using the old index, but the shuffling changed which option is at that index!
 
 ---
@@ -64,6 +68,7 @@ The code tried to "update" the correct answer after shuffling by using the old i
 ### Fix 1: Preserve Correct Answer Text (Generate_Quiz.py)
 
 **BEFORE (Buggy):**
+
 ```python
 if shuffle_options:
     for q in quiz["questions"]:
@@ -74,6 +79,7 @@ if shuffle_options:
 ```
 
 **AFTER (Fixed):**
+
 ```python
 if shuffle_options:
     for q in quiz["questions"]:
@@ -94,12 +100,14 @@ if shuffle_options:
 Added extra safety by normalizing strings before comparison:
 
 **BEFORE:**
+
 ```python
 if user_answer == question["correct_answer"]:
     correct = True
 ```
 
 **AFTER:**
+
 ```python
 # Normaliser les réponses pour éviter les problèmes d'espaces/casse
 user_answer_normalized = str(user_answer).strip()
@@ -110,6 +118,7 @@ if user_answer_normalized == correct_answer_normalized:
 ```
 
 **Benefits:**
+
 - Removes leading/trailing whitespace
 - Converts to string (safety)
 - Prevents false negatives from formatting issues
@@ -119,7 +128,9 @@ if user_answer_normalized == correct_answer_normalized:
 ## 🧪 Testing Verification
 
 ### Test Case 1: Basic Quiz Without Shuffle
+
 **Setup:**
+
 - Question: "What is the capital of France?"
 - Options: ["Paris", "London", "Berlin"]
 - Correct Answer: "Paris"
@@ -131,7 +142,9 @@ if user_answer_normalized == correct_answer_normalized:
 ---
 
 ### Test Case 2: Quiz With Option Shuffling (THE BUG)
+
 **Setup:**
+
 - Question: "What is the capital of France?"
 - Options BEFORE shuffle: ["Paris", "London", "Berlin"]
 - Options AFTER shuffle: ["Berlin", "Paris", "London"]
@@ -139,11 +152,13 @@ if user_answer_normalized == correct_answer_normalized:
 - Shuffle: ON
 
 **Before Fix:**
+
 - User selects "Paris"
 - System compares "Paris" vs "Berlin" (wrong answer at index 0)
 - Result: INCORRECT ❌ (BUG!)
 
 **After Fix:**
+
 - User selects "Paris"
 - System compares "Paris" vs "Paris" (preserved correct answer)
 - Result: CORRECT ✅ (FIXED!)
@@ -151,23 +166,26 @@ if user_answer_normalized == correct_answer_normalized:
 ---
 
 ### Test Case 3: Edge Cases
-| Test | Input | Expected | Result |
-|------|-------|----------|--------|
-| Extra spaces | `"Paris "` vs `"Paris"` | CORRECT | ✅ PASS |
-| Multiple correct answers | All match after shuffle | CORRECT | ✅ PASS |
-| Long answer text | Text preserved | CORRECT | ✅ PASS |
+
+| Test                     | Input                   | Expected | Result  |
+| ------------------------ | ----------------------- | -------- | ------- |
+| Extra spaces             | `"Paris "` vs `"Paris"` | CORRECT  | ✅ PASS |
+| Multiple correct answers | All match after shuffle | CORRECT  | ✅ PASS |
+| Long answer text         | Text preserved          | CORRECT  | ✅ PASS |
 
 ---
 
 ## 📊 Impact Analysis
 
 ### Before Fix:
+
 - ❌ **100% of quizzes with shuffle** had incorrect results
 - ❌ User scores inaccurate
 - ❌ Learning analytics useless
 - ❌ Student frustration high
 
 ### After Fix:
+
 - ✅ All answer comparisons accurate
 - ✅ Scores reflect actual performance
 - ✅ Analytics now meaningful
@@ -178,7 +196,9 @@ if user_answer_normalized == correct_answer_normalized:
 ## 🔧 Technical Details
 
 ### Files Modified:
+
 1. **`pages/2_📝_Generate_Quiz.py`** (Line ~193-200)
+
    - Fixed option shuffling logic
    - Preserve correct answer text instead of index
 
@@ -188,6 +208,7 @@ if user_answer_normalized == correct_answer_normalized:
    - Convert to string for safety
 
 ### Code Quality:
+
 - ✅ No new dependencies
 - ✅ Backward compatible
 - ✅ No breaking changes
@@ -199,9 +220,11 @@ if user_answer_normalized == correct_answer_normalized:
 ## 🎯 Lessons Learned
 
 ### The Core Issue:
+
 **Never use indices after shuffling!** When you randomize a list, all index-based references become invalid.
 
 ### Best Practice:
+
 ```python
 # ❌ BAD: Using indices
 correct_idx = items.index(correct_item)
@@ -215,6 +238,7 @@ shuffle(items)
 ```
 
 ### Prevention:
+
 - Always preserve values, not positions
 - Test with randomization enabled
 - Add assertions to verify data integrity
@@ -227,11 +251,13 @@ shuffle(items)
 ### Manual Testing Steps:
 
 1. **Start the application:**
+
    ```bash
    streamlit run app.py
    ```
 
 2. **Generate a quiz with shuffling:**
+
    - Upload a document
    - Go to "Generate Quiz"
    - Set "Mélanger l'ordre des réponses" to ✅ (checked)
@@ -239,6 +265,7 @@ shuffle(items)
    - Generate the quiz
 
 3. **Take the quiz and answer correctly:**
+
    - For each question, select the answer you KNOW is correct
    - Complete all questions
    - Finish the quiz
@@ -249,6 +276,7 @@ shuffle(items)
    - Check "Correctes" count matches what you answered correctly
 
 ### Expected Results:
+
 - ✅ Correct answers marked as correct
 - ✅ Score calculation accurate
 - ✅ Statistics reflect true performance
@@ -259,6 +287,7 @@ shuffle(items)
 ## 🚀 Deployment Status
 
 ### Changes Committed:
+
 ```bash
 # Will be committed with:
 git add pages/2_📝_Generate_Quiz.py utils/quiz_manager.py
@@ -271,6 +300,7 @@ git commit -m "fix: Correct quiz answer evaluation when shuffling options
 ```
 
 ### Testing Status:
+
 - ✅ Manual testing completed
 - ✅ Edge cases verified
 - ✅ No errors in modified files
@@ -281,11 +311,13 @@ git commit -m "fix: Correct quiz answer evaluation when shuffling options
 ## 📚 Related Issues
 
 ### Potential Related Problems (Now Prevented):
+
 - ✅ Whitespace in answers causing false negatives
 - ✅ Case sensitivity issues (handled by normalization)
 - ✅ Type coercion issues (str() conversion)
 
 ### Future Improvements (Optional):
+
 - Add fuzzy matching for text answers
 - Implement partial credit for close answers
 - Add answer confidence scoring
@@ -314,7 +346,7 @@ git commit -m "fix: Correct quiz answer evaluation when shuffling options
 **Lines Changed:** 8 lines  
 **Files Modified:** 2 files  
 **Test Coverage:** 3 test cases  
-**User Impact:** 100% of quiz-takers affected  
+**User Impact:** 100% of quiz-takers affected
 
 ---
 
