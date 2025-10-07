@@ -110,7 +110,7 @@ def show_overview():
             yaxis_range=[0, 20],
             height=400,
         )
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="overview_evolution_chart")
 
     with col2:
         st.markdown("#### 🎯 Répartition des Mentions")
@@ -141,7 +141,7 @@ def show_overview():
             ]
         )
         fig.update_layout(height=400)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="overview_mentions_pie")
 
     st.divider()
 
@@ -217,7 +217,7 @@ def show_quiz_details():
                     color_continuous_scale="RdYlGn",
                 )
                 fig.update_layout(height=300)
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, use_container_width=True, key=f"quiz_detail_comp_{idx}")
 
             st.divider()
 
@@ -291,7 +291,7 @@ def show_competence_analysis():
             height=500,
         )
 
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="competence_radar_chart")
 
         st.divider()
 
