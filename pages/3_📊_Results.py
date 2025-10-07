@@ -217,7 +217,9 @@ def show_quiz_details():
                     color_continuous_scale="RdYlGn",
                 )
                 fig.update_layout(height=300)
-                st.plotly_chart(fig, use_container_width=True, key=f"quiz_detail_comp_{idx}")
+                st.plotly_chart(
+                    fig, use_container_width=True, key=f"quiz_detail_comp_{idx}"
+                )
 
             st.divider()
 

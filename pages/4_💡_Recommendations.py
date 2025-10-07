@@ -240,7 +240,9 @@ def show_progress_projection():
         height=400,
     )
 
-    st.plotly_chart(fig, use_container_width=True, key="recommendation_projection_chart")
+    st.plotly_chart(
+        fig, use_container_width=True, key="recommendation_projection_chart"
+    )
 
     # Message motivant
     if future_scores[-1] > scores[-1]:
