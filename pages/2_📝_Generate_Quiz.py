@@ -195,10 +195,11 @@ def generate_and_start_quiz(
 
                 for q in quiz["questions"]:
                     if q["type"] == "qcm" and "options" in q:
-                        # Garder trace de la bonne réponse
-                        correct_idx = q["options"].index(q["correct_answer"])
+                        # Sauvegarder la bonne réponse AVANT de mélanger
+                        correct_answer_text = q["correct_answer"]
                         random.shuffle(q["options"])
-                        q["correct_answer"] = q["options"][correct_idx]
+                        # La bonne réponse reste la même (le texte ne change pas)
+                        q["correct_answer"] = correct_answer_text
 
             # Sauvegarder le quiz
             st.session_state.current_quiz = quiz
