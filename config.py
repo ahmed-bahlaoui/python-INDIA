@@ -5,34 +5,32 @@ load_dotenv()
 
 
 class Config:
-    # API Configuration
-    AI_PROVIDER = os.getenv(
-        "AI_PROVIDER", "deepseek"
-    )  # deepseek, groq, ollama, anthropic, openai
+    # AI Provider Configuration
+    AI_PROVIDER = os.getenv("AI_PROVIDER", "deepseek")
 
     # API Keys
     DEEPSEEK_API_KEY = os.getenv("DEEPSEEK_API_KEY")
     GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+    TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
     OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
     ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
-    TOGETHER_API_KEY = os.getenv("TOGETHER_API_KEY")
+    XAI_API_KEY = os.getenv("XAI_API_KEY")  # Added xAI support
 
-    # Ollama Configuration
-    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
-    OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3.1:8b")
-
-    # Model Configuration per Provider
+    # Models for each provider
     MODELS = {
-        "deepseek": "deepseek-chat",  # Uses latest model (V3.2-Exp)
-        "groq": "llama-3.1-70b-versatile",  # ou mixtral-8x7b-32768
-        "ollama": "llama3.1:8b",
-        "openai": "gpt-4o-mini",
-        "anthropic": "claude-3-5-sonnet-20241022",
+        "deepseek": "deepseek-chat",
+        "groq": "llama-3.1-70b-versatile",
         "together": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+        "openai": "gpt-4o-mini",
+        "xai": "grok-code-fast-1",  # Added xAI model
     }
 
+    # App Configuration
+    APP_ENV = os.getenv("APP_ENV", "development")
+    DEBUG = os.getenv("DEBUG", "False").lower() == "true"
+
     # App Config
-    APP_TITLE = "QuizAI - Apprentissage Universitaire"
+    APP_TITLE = "MentorAI - Apprentissage Universitaire"
     MAX_FILE_SIZE = 10  # MB
 
     # ... reste du config

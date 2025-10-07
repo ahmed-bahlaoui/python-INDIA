@@ -35,6 +35,10 @@ class AIGenerator:
             )
         elif self.provider == "openai":
             return openai.OpenAI(api_key=Config.OPENAI_API_KEY)
+        elif self.provider == "xai":
+            return openai.OpenAI(
+                api_key=Config.XAI_API_KEY, base_url="https://api.x.ai/v1"
+            )
         else:
             raise ValueError(f"Provider {self.provider} non supporté")
 
