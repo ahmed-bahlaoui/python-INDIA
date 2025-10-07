@@ -10,9 +10,11 @@
 ## 📋 Problem Description
 
 ### User Report:
+
 > "there is an error in generating the recommandations page"
 
 ### Symptoms:
+
 - Recommendations page displays error message
 - "Erreur lors de la génération des recommandations" shown
 - No personalized recommendations displayed
@@ -69,6 +71,7 @@ def generate_recommendations():
 ### Fix 1: Always Return Valid Recommendations (ai_generator.py)
 
 **BEFORE:**
+
 ```python
 if response_text:
     try:
@@ -80,6 +83,7 @@ return None  # ❌ Bad!
 ```
 
 **AFTER:**
+
 ```python
 if response_text:
     try:
@@ -100,6 +104,7 @@ return self._create_default_recommendations()  # ✅ Always returns valid data!
 ```
 
 **Key Changes:**
+
 - ✅ Never returns `None`
 - ✅ Returns default recommendations on any failure
 - ✅ Added error message when JSON not found
@@ -110,6 +115,7 @@ return self._create_default_recommendations()  # ✅ Always returns valid data!
 ### Fix 2: Add Error Handling in Recommendations Page
 
 **BEFORE:**
+
 ```python
 def generate_recommendations():
     ai_gen = AIGenerator()
@@ -119,6 +125,7 @@ def generate_recommendations():
 ```
 
 **AFTER:**
+
 ```python
 def generate_recommendations():
     try:
@@ -132,7 +139,7 @@ def generate_recommendations():
                 for comp, score in result["competence_breakdown"].items():
                     if score < 60:
                         weak_areas.append(comp)
-        
+
         # Ajouter aussi les weak_areas de chaque résultat
         for result in results:
             if "weak_areas" in result:
@@ -140,7 +147,7 @@ def generate_recommendations():
 
         # Générer les recommandations
         recommendations = ai_gen.generate_recommendations(results, weak_areas)
-        
+
         # Vérifier que les recommandations ne sont pas None
         if recommendations is None:
             st.error("Erreur lors de la génération des recommandations")
@@ -154,7 +161,7 @@ def generate_recommendations():
                     "semaine_2": ["Faire des exercices"],
                 },
             }
-        
+
         st.session_state.recommendations = recommendations
     except Exception as e:
         st.error(f"Erreur lors de la génération: {str(e)}")
@@ -172,6 +179,7 @@ def generate_recommendations():
 ```
 
 **Key Changes:**
+
 - ✅ Wrapped in try-except block
 - ✅ Validates recommendations is not `None`
 - ✅ Collects weak areas from multiple sources
@@ -184,9 +192,11 @@ def generate_recommendations():
 ## 🧪 Testing Verification
 
 ### Test Case 1: Successful AI Generation
+
 **Setup:** AI successfully generates recommendations
 
-**Expected:** 
+**Expected:**
+
 - ✅ Recommendations displayed correctly
 - ✅ All sections populated
 - ✅ No error messages
@@ -196,9 +206,11 @@ def generate_recommendations():
 ---
 
 ### Test Case 2: AI Generation Fails
+
 **Setup:** AI returns None or invalid JSON
 
 **Expected:**
+
 - ✅ Default recommendations displayed
 - ✅ Error message shown: "Erreur lors de la génération des recommandations"
 - ✅ Page still functional with basic suggestions
@@ -208,9 +220,11 @@ def generate_recommendations():
 ---
 
 ### Test Case 3: API Error or Timeout
+
 **Setup:** AI provider times out or returns error
 
 **Expected:**
+
 - ✅ Exception caught gracefully
 - ✅ User sees error message with details
 - ✅ Default recommendations still provided
@@ -223,12 +237,14 @@ def generate_recommendations():
 ## 📊 Impact Analysis
 
 ### Before Fix:
+
 - ❌ Recommendations page showed errors
 - ❌ No fallback when AI fails
 - ❌ Users couldn't access recommendations
 - ❌ Poor user experience
 
 ### After Fix:
+
 - ✅ Always shows some recommendations (AI or default)
 - ✅ Graceful degradation when AI fails
 - ✅ Clear error messages for debugging
@@ -240,7 +256,9 @@ def generate_recommendations():
 ## 🔧 Technical Details
 
 ### Files Modified:
+
 1. **`utils/ai_generator.py`** (Lines ~326-339)
+
    - Changed `return None` to `return self._create_default_recommendations()`
    - Added JSON not found error message
    - Ensures function always returns valid dict
@@ -252,6 +270,7 @@ def generate_recommendations():
    - Provide inline default recommendations
 
 ### Default Recommendations Structure:
+
 ```python
 {
     "points_a_revoir": [],
@@ -270,6 +289,7 @@ def generate_recommendations():
 ## 🎯 Lessons Learned
 
 ### Never Return None for User-Facing Features
+
 ```python
 # ❌ BAD: User sees error or blank page
 if generation_fails:
@@ -281,6 +301,7 @@ if generation_fails:
 ```
 
 ### Always Validate API/AI Responses
+
 ```python
 # ✅ Check for None
 if recommendations is None:
@@ -294,6 +315,7 @@ except Exception as e:
 ```
 
 ### Provide Meaningful Error Messages
+
 ```python
 # ❌ Generic
 st.error("Error")
@@ -309,14 +331,17 @@ st.error(f"Erreur lors de la génération: {str(e)}")
 ### Manual Testing Steps:
 
 1. **Complete some quizzes:**
+
    - Generate and complete at least 2 quizzes
    - Get varying scores (some below 60%)
 
 2. **Navigate to Recommendations:**
+
    - Click on "💡 Recommendations" page
    - Or click "Voir les Recommandations Personnalisées" from Results
 
 3. **Verify recommendations load:**
+
    - Should see spinner: "🤖 Génération de recommandations personnalisées..."
    - Recommendations should appear (AI-generated or default)
 
@@ -325,6 +350,7 @@ st.error(f"Erreur lors de la génération: {str(e)}")
    - Should regenerate recommendations
 
 ### Expected Behavior:
+
 - ✅ Recommendations always display (never blank page)
 - ✅ If AI fails, see default recommendations
 - ✅ Error messages are clear and helpful
@@ -335,6 +361,7 @@ st.error(f"Erreur lors de la génération: {str(e)}")
 ## 🚀 Deployment Status
 
 ### Changes Committed:
+
 ```bash
 git add utils/ai_generator.py pages/4_💡_Recommendations.py
 git commit -m "fix: Handle errors in recommendations generation gracefully
@@ -348,6 +375,7 @@ git commit -m "fix: Handle errors in recommendations generation gracefully
 ```
 
 ### Testing Status:
+
 - ✅ Error handling tested
 - ✅ Default recommendations verified
 - ✅ No syntax/type errors
@@ -358,12 +386,14 @@ git commit -m "fix: Handle errors in recommendations generation gracefully
 ## 📚 Related Fixes
 
 ### Improvements Made:
+
 - ✅ Better error messages for debugging
 - ✅ Collect weak areas from competence breakdown AND weak_areas array
 - ✅ More robust JSON parsing
 - ✅ Multiple fallback layers
 
 ### Future Enhancements (Optional):
+
 - Cache successful recommendations
 - Add retry with exponential backoff
 - Log errors for monitoring
@@ -392,7 +422,7 @@ git commit -m "fix: Handle errors in recommendations generation gracefully
 **Lines Changed:** ~50 lines  
 **Files Modified:** 2 files  
 **Robustness:** 5 layers of error handling  
-**User Impact:** All users accessing recommendations  
+**User Impact:** All users accessing recommendations
 
 ---
 

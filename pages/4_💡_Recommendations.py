@@ -142,7 +142,7 @@ def generate_recommendations():
                 for comp, score in result["competence_breakdown"].items():
                     if score < 60:
                         weak_areas.append(comp)
-        
+
         # Ajouter aussi les weak_areas de chaque résultat
         for result in results:
             if "weak_areas" in result:
@@ -150,7 +150,7 @@ def generate_recommendations():
 
         # Générer les recommandations
         recommendations = ai_gen.generate_recommendations(results, weak_areas)
-        
+
         # Vérifier que les recommandations ne sont pas None
         if recommendations is None:
             st.error("Erreur lors de la génération des recommandations")
@@ -164,7 +164,7 @@ def generate_recommendations():
                     "semaine_2": ["Faire des exercices"],
                 },
             }
-        
+
         st.session_state.recommendations = recommendations
     except Exception as e:
         st.error(f"Erreur lors de la génération: {str(e)}")
