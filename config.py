@@ -19,10 +19,10 @@ class Config:
     # Models for each provider
     MODELS = {
         "deepseek": "deepseek-chat",
-        "groq": "llama-3.1-70b-versatile",
+        "groq": "deepseek-r1-distill-llama-70b",  # Updated to active model
         "together": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
         "openai": "gpt-4o-mini",
-        "xai": "grok-code-fast-1",  # Added xAI model
+        "xai": "grok-beta",  # Added xAI model
     }
 
     # App Configuration
