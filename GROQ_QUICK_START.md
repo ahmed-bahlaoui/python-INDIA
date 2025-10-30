@@ -39,7 +39,6 @@ AI_PROVIDER=groq
 GROQ_API_KEY=gsk_your_actual_key_from_groq_console
 
 # Keep your DeepSeek key as backup
-DEEPSEEK_API_KEY=sk-2426687b875a4cb699b10a5cb14c19b1
 
 # App Configuration
 APP_ENV=development
