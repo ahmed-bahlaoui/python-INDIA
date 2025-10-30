@@ -22,7 +22,7 @@ class Config:
         "groq": "openai/gpt-oss-120b",
         "together": "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
         "openai": "gpt-4o-mini",
-        "xai": "grok-beta",  # Added xAI model
+        "xai": "grok-beta",
     }
 
     # App Configuration
